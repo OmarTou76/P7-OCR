@@ -1,0 +1,31 @@
+/* Font DM sans Font du "logo" */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&display=swap');
+
+/* Font roboto - Detail des recettes */
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+/* font-family: 'Roboto', sans-serif; */
+
+/* Font lato - Principal */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+body {
+    font-family: 'Lato', sans-serif;
+    max-width: 1400px;
+    margin: auto;
+}
+
+*, *::before, *::after{
+    box-sizing: border-box;
+    margin: 0px;
+}
+
+header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+    color: #D04F4F;
+    font-size: 1rem;
+    text-align: center;
+    margin: 20px 0 10px;
+}
