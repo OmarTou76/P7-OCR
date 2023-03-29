@@ -3,10 +3,22 @@
 
 /* Font roboto - Detail des recettes */
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-/* font-family: 'Roboto', sans-serif; */
 
 /* Font lato - Principal */
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+:root {
+    --gray: #E7E7E7;
+    --blue: #3282F7;
+    --green: #68D9A4;
+    --red: #ED6454;
+}
+
+ul{
+    list-style-position: inside;
+    padding-left: 0;
+    list-style: none;
+}
 
 body {
     font-family: 'Lato', sans-serif;
@@ -19,6 +31,10 @@ body {
     margin: 0px;
 }
 
+main {
+    margin: 0 50px;
+}
+
 header{
     display: flex;
     align-items: center;
@@ -28,4 +44,30 @@ header{
     font-size: 1rem;
     text-align: center;
     margin: 20px 0 10px;
+}
+
+.searchForm {
+    display: flex;
+    width: 100%;
+    height: 70px;
+    background-color: var(--gray);
+    border-radius: 5px;
+    overflow: hidden;
+}
+.searchForm input {
+    height: 100%;
+    flex: 10;
+    background-color: inherit;
+    border: none;
+    padding: 0 1rem;
+    font-size: 18px;
+}
+.searchForm button {
+    flex: .5;
+    font-size: 32px;
+    margin: auto;
+    border: none;
+    background-color: inherit;
+    margin-right: .3rem;
+    cursor: pointer;
 }
