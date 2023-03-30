@@ -117,6 +117,7 @@ header{
     align-items: center;
     gap: .5rem;
     font-weight: 700;
+    flex-wrap: nowrap;
 }
 
 /* Recipe card description */
@@ -126,11 +127,13 @@ header{
     display: flex;
     line-height: 12px;
     padding: 2px;
+    overflow-y: hidden;
 }
 .recipes__details__info-ingredient {
     flex: 1;
 }
 .recipes__details__info-description {
     flex: 1;
+    line-height: 11px;
     font-family: 'Roboto', sans-serif;
 }
