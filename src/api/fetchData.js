@@ -31,7 +31,6 @@ export class FetchRecipes extends FetchData {
         return this._recipes.map(recipe => new Recipe(recipe))
     }
 
-
     get recipes() {
         return this._recipes
     }
@@ -39,15 +38,14 @@ export class FetchRecipes extends FetchData {
     get appliance() {
         if (this._appliance.length === 0) {
             this._appliance = [...this._recipes].reduce((prev, curr) => {
-                if (!prev) {
-                    prev = []
-                }
-                const isExist = prev.findIndex(element => element.toLowerCase() === curr.appliance)
+                if (!prev) prev = []
+                const isExist = prev.findIndex(element => element.toLowerCase() === curr.appliance.toLowerCase())
                 if (isExist === -1) {
                     prev.push(curr.appliance)
                 }
+
                 return prev
-            })
+            }, [])
         }
         return this._appliance
     }
