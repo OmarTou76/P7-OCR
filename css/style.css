@@ -72,6 +72,97 @@ header{
     cursor: pointer;
 }
 
+/* dropdowns container */
+
+.dropdowns-container {
+    height: 4rem;
+    margin: 20px 0;
+    color: white;
+    font-size: 18px;
+    display: flex;
+    gap: 2rem;
+}
+
+.dropdown__content {
+    height: 100%;
+    width: 200px;
+    background: var(--blue);
+    border-radius: 5px;
+    transition: width 0.2s;
+    position: relative;
+    border-radius: 5px;
+}
+
+.dropdown__content-active {
+    width: 660px;
+}
+.fa-chevron-up {
+    position: absolute;
+    right: 1rem;
+    top: 1.2rem;
+}
+.chevron_down {
+    transform: rotate(180deg);
+}
+
+.dropdown__content input {
+    height: 100%;
+    width: 100%;
+    background-color: inherit;
+    border: none;
+    color: white;
+    font-size: 18px;
+    width: 100%;
+    text-align: start;
+    padding-left: 1rem;
+    border-radius: 5px;
+}
+
+.dropdown__content input[type="button"]:hover{
+    cursor: pointer;
+}
+
+.dropdown__content input::placeholder {
+    color: white;
+    opacity: .5;
+}
+
+.dropdown__list {
+    position: absolute;
+    background: var(--blue);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    row-gap: .5rem;
+    width: 100%;
+    top: 3rem;
+    left: 0;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.dropdown__list li {
+    cursor: pointer;
+    padding: .1rem;
+    width: fit-content;
+    border-radius: 6px;
+}
+
+.ddUstensils ul li:hover {
+    background-color: #499973;
+}
+
+.hidden {
+    display: none;
+}
+
+.ddUstensils {
+    background-color: var(--green);
+}
+
+.ddAppliance {
+    background-color: var(--red);
+}
 
 /* Recipes container */
 
