@@ -6,6 +6,8 @@ class App {
     constructor() {
         this.recipesApi = new FetchRecipes("./src/data/recipes.json")
         this.$recipesWrapper = document.querySelector('.recipes-container')
+
+        this.selectedTags = []
     }
 
     async main() {
@@ -17,27 +19,25 @@ class App {
         const $dropdownWrapper = document.querySelector('.dropdowns-container')
 
         const { ingredients, ustensils, appliance } = this.recipesApi
-        const ddIngredients = new Dropdown({
+
+        new Dropdown({
             data: ingredients,
             wrapper: $dropdownWrapper,
-            placeholder: "Ingredients"
-        })
-        const ddAppliance = new Dropdown({
+            section: "Ingredients",
+            class: "ddIngredients"
+        }, this.selectedTags).create()
+        new Dropdown({
             data: appliance,
             wrapper: $dropdownWrapper,
-            placeholder: "Appareils",
+            section: "Appareils",
             class: "ddAppliance"
-        })
-        const ddUstensils = new Dropdown({
+        }, this.selectedTags).create()
+        new Dropdown({
             data: ustensils,
             wrapper: $dropdownWrapper,
-            placeholder: "Ustensils",
+            section: "Ustensils",
             class: "ddUstensils"
-        }).create()
-
-        ddIngredients.create()
-        //ddUstensils.create()
-        ddAppliance.create()
+        }, this.selectedTags).create()
 
     }
 

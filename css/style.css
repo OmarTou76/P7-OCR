@@ -72,6 +72,34 @@ header{
     cursor: pointer;
 }
 
+/* Tags container */
+
+.tags-container {
+    display: flex;
+    gap: 1.5rem;
+    margin: 1rem 0;
+}
+
+.tag {
+    width: max-content;
+    padding: .5rem;
+    background: var(--blue);
+    color: white;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+.tag:hover {
+    background-color: #1f519d;
+}
+
+.tag.ddUstensils:hover {
+    background-color: #499973;
+}
+
+.tag.ddAppliance:hover {
+    background-color: #994137;
+}
 /* dropdowns container */
 
 .dropdowns-container {
@@ -98,8 +126,10 @@ header{
 }
 .fa-chevron-up {
     position: absolute;
-    right: 1rem;
-    top: 1.2rem;
+    padding: 1rem;
+    right: .5rem;
+    top: .3rem;
+    cursor: pointer;
 }
 .chevron_down {
     transform: rotate(180deg);
@@ -143,13 +173,21 @@ header{
 
 .dropdown__list li {
     cursor: pointer;
-    padding: .1rem;
+    padding: .1rem .2rem;
     width: fit-content;
     border-radius: 6px;
 }
 
+.dropdown__list li:hover {
+    background-color: #1f519d;
+}
+
 .ddUstensils ul li:hover {
     background-color: #499973;
+}
+
+.ddAppliance ul li:hover {
+    background-color: #994137;
 }
 
 .hidden {
