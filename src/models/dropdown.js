@@ -27,6 +27,11 @@ export class Dropdown {
         this.onSearch()
     }
 
+    update(data) {
+        this.recipes = data
+        this.fillList()
+    }
+
     fillList() {
         const ul = this.$dropdown.querySelector('ul')
         ul.innerHTML = ''

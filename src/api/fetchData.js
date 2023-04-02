@@ -24,11 +24,27 @@ export class FetchRecipes extends FetchData {
         this._ingredients = []
         this._appliance = []
         this._ustensils = []
+        this._filteredRecipes = []
     }
 
-    async getRecipes() {
+    async init() {
         this._recipes = await this.get()
-        return this._recipes.map(recipe => new Recipe(recipe))
+    }
+
+    displayRecipe($recipesWrapper = '') {
+        if (!$recipesWrapper) {
+            this.$recipesWrapper.innerHTML = ''
+        } else {
+            this.$recipesWrapper = $recipesWrapper
+        }
+        const recipes = [...this.recipes].map(recipe => new Recipe(recipe))
+        recipes.forEach(recipe => {
+            this.$recipesWrapper.appendChild(recipe.createCard())
+        })
+    }
+
+    set recipes(recipe) {
+        this._recipes = recipe
     }
 
     get recipes() {
@@ -36,49 +52,43 @@ export class FetchRecipes extends FetchData {
     }
 
     get appliance() {
-        if (this._appliance.length === 0) {
-            this._appliance = [...this._recipes].reduce((prev, curr) => {
-                if (!prev) prev = []
-                const isExist = prev.findIndex(element => element.toLowerCase() === curr.appliance.toLowerCase())
-                if (isExist === -1) {
-                    prev.push(curr.appliance)
-                }
+        this._appliance = [...this._recipes].reduce((prev, curr) => {
+            if (!prev) prev = []
+            const isExist = prev.findIndex(element => element.toLowerCase() === curr.appliance.toLowerCase())
+            if (isExist === -1) {
+                prev.push(curr.appliance)
+            }
 
-                return prev
-            }, [])
-        }
+            return prev
+        }, [])
         return this._appliance
     }
 
     get ingredients() {
-        if (this._ingredients.length === 0) {
-            this._ingredients = [...this._recipes].reduce((prev, curr) => {
-                if (!prev) prev = []
-                curr.ingredients.forEach(recipe => {
-                    const isExist = prev.findIndex(element => element.toLowerCase() === recipe.ingredient.toLowerCase())
-                    if (isExist === -1) {
-                        prev.push(recipe.ingredient)
-                    }
-                })
-                return prev
-            }, [])
-        }
+        this._ingredients = [...this._recipes].reduce((prev, curr) => {
+            if (!prev) prev = []
+            curr.ingredients.forEach(recipe => {
+                const isExist = prev.findIndex(element => element.toLowerCase() === recipe.ingredient.toLowerCase())
+                if (isExist === -1) {
+                    prev.push(recipe.ingredient)
+                }
+            })
+            return prev
+        }, [])
         return this._ingredients
     }
 
     get ustensils() {
-        if (this._ustensils.length === 0) {
-            this._ustensils = [...this._recipes].reduce((prev, curr) => {
-                if (!prev) prev = []
-                curr.ustensils.forEach(recipe => {
-                    const isExist = prev.findIndex(element => element.toLowerCase() === recipe.toLowerCase())
-                    if (isExist === -1) {
-                        prev.push(recipe)
-                    }
-                })
-                return prev
-            }, [])
-        }
+        this._ustensils = [...this._recipes].reduce((prev, curr) => {
+            if (!prev) prev = []
+            curr.ustensils.forEach(recipe => {
+                const isExist = prev.findIndex(element => element.toLowerCase() === recipe.toLowerCase())
+                if (isExist === -1) {
+                    prev.push(recipe)
+                }
+            })
+            return prev
+        }, [])
         return this._ustensils
     }
 }
