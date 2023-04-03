@@ -24,16 +24,12 @@ export class Search {
     }
 
     filter() {
-        console.log(this.filteredSearch)
         this.filterByInput()
-        console.log(this.filteredSearch)
         this.filterbyTags()
-        console.log(this.filteredSearch)
 
 
-        let data = !this._query && !this.filteredSearch.length ? [...this.initialState] : [...this.filteredSearch]
 
-        this.app.displayRecipe(data)
+        this.app.displayRecipe(this.currentState)
 
         this.saveTags()
         this.notify()
@@ -188,7 +184,7 @@ export class Search {
     }
 
     get currentState() {
-        return this._query ? [...this.filteredSearch] : [...this.initialState]
+        return !this._query && !this.filteredSearch.length ? [...this.initialState] : [...this.filteredSearch]
     }
 
     get tags() {
