@@ -1,11 +1,12 @@
 export class Search {
     constructor(app) {
-        this._initialState = []
         this.app = app
+
+        this._initialState = []
         this._filteredSearch = []
 
         this._tags = []
-        this._selectedTags = []
+        this._selectedTags = {}
 
         this.subscribers = []
 
@@ -17,26 +18,56 @@ export class Search {
 
 
     update() {
-        this.filterbyTags()
 
-        const data = this.filteredSearch.length ? this.filteredSearch : this.initialState
+        this.filter()
+
+    }
+
+    filter() {
+        console.log(this.filteredSearch)
+        this.filterByInput()
+        console.log(this.filteredSearch)
+        this.filterbyTags()
+        console.log(this.filteredSearch)
+
+
+        let data = !this._query && !this.filteredSearch.length ? [...this.initialState] : [...this.filteredSearch]
 
         this.app.displayRecipe(data)
 
         this.saveTags()
         this.notify()
+
+    }
+
+    filterByInput() {
+        if (!this._query) return
+        this._filteredSearch = [...this.initialState].filter(el => {
+            let match = false
+            const values = [el.name, el.description]
+
+            el.ingredients.forEach(i => values.push(i.ingredient))
+
+            values.forEach(v => {
+                if (v.toLowerCase().includes(this._query.toLowerCase())) {
+                    match = true
+                    return
+                }
+            })
+            return match
+        })
     }
 
     filterbyTags() {
 
-        const recipes = this._query ? [...this._filteredSearch] : [...this._initialState]
-
         const entries = Object.entries(this.selectedTags)
 
-        if (entries?.length === 0) {
+        if (entries.length === 0 && !this._query) {
             this._filteredSearch = []
             return
         }
+
+        const recipes = this.currentState
 
         this._filteredSearch = recipes.filter(recipe => {
             let match = true
@@ -71,15 +102,13 @@ export class Search {
 
         this.$mainSearch.addEventListener('input', (e) => {
             const { value } = e.target
-            this._query = value
-            this.filterByInput()
-            if (this.tags.length) {
-                this.filterbyTags()
+            if (value.length < 3) {
+                this._query = ""
+            } else {
+                this._query = value
             }
-            this.app.displayRecipe(this._filteredSearch)
-            this.saveTags()
+            this.filter()
 
-            this.notify()
         })
     }
 
@@ -91,22 +120,6 @@ export class Search {
         this.subscribers.push(element)
     }
 
-    filterByInput() {
-        this._filteredSearch = [...this.initialState].filter(el => {
-            let match = false
-            const values = [el.name, el.description]
-
-            el.ingredients.forEach(i => values.push(i.ingredient))
-
-            values.forEach(v => {
-                if (v.toLowerCase().includes(this._query.toLowerCase())) {
-                    match = true
-                    return
-                }
-            })
-            return match
-        })
-    }
 
     initialize(data) {
         this._initialState = data
@@ -114,7 +127,7 @@ export class Search {
     }
 
     saveTags() {
-        const recipes = this._filteredSearch?.length ? [...this._filteredSearch] : [...this._initialState]
+        const recipes = this.currentState
 
         this._tags["ingredients"] = this.getIngredients(recipes)
         this._tags["ustensils"] = this.getUstensils(recipes)
@@ -160,18 +173,22 @@ export class Search {
 
 
     removeTag({ id, tag }) {
-        this._selectedTags[id.toLowerCase()] = this._selectedTags[id.toLowerCase()].filter(element => element !== tag)
-        if (!this._selectedTags[id.toLowerCase()].length) {
-            delete this._selectedTags[id.toLowerCase()]
+        this.selectedTags[id.toLowerCase()] = this.selectedTags[id.toLowerCase()].filter(element => element !== tag)
+        if (!this.selectedTags[id.toLowerCase()].length) {
+            delete this.selectedTags[id.toLowerCase()]
         }
     }
 
     addTag({ id, tag }) {
         if (this.selectedTags.hasOwnProperty(id.toLowerCase())) {
-            this._selectedTags[id.toLowerCase()].push(tag)
+            this.selectedTags[id.toLowerCase()].push(tag)
         } else {
-            this._selectedTags[id.toLowerCase()] = [tag]
+            this.selectedTags[id.toLowerCase()] = [tag]
         }
+    }
+
+    get currentState() {
+        return this._query ? [...this.filteredSearch] : [...this.initialState]
     }
 
     get tags() {
