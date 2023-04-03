@@ -1,45 +1,52 @@
 import { FetchRecipes } from "./api/fetchData.js";
-import { Filter } from "./filter/Filter_V1.js";
 import { Dropdown } from "./models/dropdown.js";
 import { Recipe } from "./models/recipe.js";
+import { Search } from "./search/Search.js";
 
 class App {
 
     constructor() {
         this.recipesApi = new FetchRecipes("./src/data/recipes.json")
         this.$recipesWrapper = document.querySelector('.recipes-container')
-        this.selectedTags = []
+        this.search = new Search(this)
+
+
     }
 
     async main() {
-        await this.recipesApi.init()
-        this.recipesApi.displayRecipe(this.$recipesWrapper)
+        const recipe = await this.recipesApi.get()
+        this.search.initialize(recipe)
+        this.displayRecipe(recipe)
 
-        const $dropdownWrapper = document.querySelector('.dropdowns-container')
-
-        const { ingredients, ustensils, appliance } = this.recipesApi
 
         const dropdowns = [new Dropdown({
-            data: ingredients,
-            wrapper: $dropdownWrapper,
-            section: "Ingredients",
+            id: "ingredients",
+            name: "Ingredients",
             class: "ddIngredients"
-        }, this.selectedTags),
+        }, this.search),
         new Dropdown({
-            data: appliance,
-            wrapper: $dropdownWrapper,
-            section: "Appareils",
+            id: "appliance",
+            name: "Appareils",
             class: "ddAppliance"
-        }, this.selectedTags),
+        }, this.search),
         new Dropdown({
-            data: ustensils,
-            wrapper: $dropdownWrapper,
-            section: "Ustensils",
+            id: "ustensils",
+            name: "Ustensils",
             class: "ddUstensils"
-        }, this.selectedTags)]
-        dropdowns.forEach(dd => dd.create())
-        this.filter = new Filter(this.recipesApi, dropdowns)
+        }, this.search)]
+
+        dropdowns.forEach(dd => this.search.subscribe(dd))
+
     }
+
+    displayRecipe(recipes) {
+        this.$recipesWrapper.innerHTML = ""
+        recipes.map(recipe => new Recipe(recipe))
+            .forEach(recipe => {
+                this.$recipesWrapper.appendChild(recipe.createCard())
+            })
+    }
+
 
 }
 

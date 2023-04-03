@@ -1,78 +1,92 @@
 export class Dropdown {
-    constructor(data, selectedTags) {
-        this.recipes = data.data
-        this.$wrapper = data.wrapper
-        this.section = data.section
-        this.class = data.class ?? data.class
-
-        this.selectedTags = selectedTags
+    constructor(data, search) {
+        this.search = search
+        this._id = data.id
+        this._name = data.name
+        this._class = data.class
 
         this.$dropdown = document.createElement('div')
-        this.$dropdown.classList.add('dropdown__content', this.class ?? this.class)
+        this.$dropdown.classList.add('dropdown__content', this._class ?? this._class)
 
+
+        this.$dropdownWrapper = document.querySelector('.dropdowns-container')
         this.$tagWrapper = document.querySelector('.tags-container')
+
+        this.create()
     }
 
     create() {
         const content = `
-        <input type="button" value="${this.section}" id="${this.section}" id="searchDropdown">
-        <i class="fas fa-chevron-up chevron_down"></i>
-        <ul class="dropdown__list hidden ${this.class || ""}">
-        </ul>
-        `
+            <input type="button" value="${this._name}" id="${this._id}" id="searchDropdown">
+            <i class="fas fa-chevron-up chevron_down"></i>
+            <ul class="dropdown__list hidden ${this._class || ""}">
+            </ul>
+            `
         this.$dropdown.innerHTML = content
-        this.$wrapper.appendChild(this.$dropdown)
+        this.$dropdownWrapper.appendChild(this.$dropdown)
         this.fillList()
         this.handleDropdown()
         this.onSearch()
     }
 
-    update(data) {
-        this.recipes = data
+    update() {
         this.fillList()
     }
 
-    fillList() {
-        const ul = this.$dropdown.querySelector('ul')
-        ul.innerHTML = ''
-        this.recipes
-            .filter(tag => !this.selectedTags[this.section.toLowerCase()]?.includes(tag))
-            .map((el) => {
-                const li = document.createElement('li')
-                li.innerHTML = el
-                this.onSelectTag(li)
-                return li
-            }).forEach(el => ul.appendChild(el))
+    fillList(query = "") {
+        const tags = this.search.tags[this._id]
+        const selectedTags = this.search.selectedTags[this._id]
+
+        let list = tags.filter(tag => !selectedTags?.includes(tag))
+
+        if (query) {
+            list = list.filter(tag => tag.toLowerCase().includes(query.toLowerCase()))
+        }
+        this.displayList(list)
     }
 
-    onSelectTag(element, textInput = "") {
+    displayList(list) {
+        const ul = this.$dropdown.querySelector('ul')
+        ul.innerHTML = ''
+
+        list.map(tag => {
+            const li = document.createElement('li')
+            li.innerHTML = tag
+            this.onSelectTag(li, tag)
+            return li
+        }).forEach(tag => ul.appendChild(tag))
+    }
+
+    onSelectTag(element) {
         element.addEventListener('click', (e) => {
             const elementSelected = e.target.innerHTML
+            const { value } = this.$dropdown.querySelector('input')
             this.createTag(elementSelected)
-            if (textInput) {
-                this.onInput(textInput)
+            if (value) {
+                this.fillList(value)
             } else {
                 this.fillList()
             }
+            this.search.update()
         })
     }
 
     saveTag(tag) {
-        if (this.selectedTags.hasOwnProperty(this.section.toLowerCase())) {
-            this.selectedTags[this.section.toLowerCase()].push(tag)
-        } else {
-            this.selectedTags[this.section.toLowerCase()] = [tag]
-        }
+        this.search.addTag({
+            id: this._id,
+            tag
+        })
+        this.fillList()
     }
 
     createTag(tag) {
         const btn = document.createElement('button')
-        btn.classList.add("tag", this.class)
+        btn.classList.add("tag", this._class)
 
         const content = `
-            <span>${tag}</span>
-            <i class="far fa-times-circle"></i>
-        `
+                <span>${tag}</span>
+                <i class="far fa-times-circle"></i>
+            `
         btn.innerHTML = content
 
         this.$tagWrapper.appendChild(btn)
@@ -82,8 +96,17 @@ export class Dropdown {
 
     onDeleteTag(btn, tag) {
         btn.addEventListener('click', () => {
-            this.selectedTags[this.section.toLowerCase()] = this.selectedTags[this.section.toLowerCase()].filter(element => element !== tag)
-            this.fillList()
+            this.search.removeTag({
+                id: this._id,
+                tag
+            })
+            const { value } = this.$dropdown.querySelector('input')
+            if (value) {
+                this.fillList(value)
+            } else {
+                this.fillList()
+            }
+            this.search.update()
             btn.remove()
         })
     }
@@ -96,7 +119,7 @@ export class Dropdown {
             const { value } = e.target
 
             if (value.length >= 3) {
-                this.onInput(value)
+                this.fillList(value)
             } else {
                 this.fillList()
             }
@@ -120,7 +143,8 @@ export class Dropdown {
     }
 
     handleDropdown() {
-        const dropdown = this.$wrapper.querySelector(`#${this.section}`).parentNode
+
+        const dropdown = this.$dropdownWrapper.querySelector(`#${this._id}`).parentNode
         const list = dropdown.querySelector('.dropdown__list')
         const input = dropdown.querySelector('input')
         const chevron = dropdown.querySelector('.fa-chevron-up')
@@ -134,14 +158,14 @@ export class Dropdown {
                 list.classList.add('hidden')
                 chevron.classList.add('chevron_down')
                 input.setAttribute('type', 'button')
-                input.setAttribute('value', this.section)
+                input.setAttribute('value', this._name)
             } else {
                 dropdown.classList.add('dropdown__content-active')
                 list.classList.remove('hidden')
                 chevron.classList.remove('chevron_down')
                 input.setAttribute('type', 'input')
-                input.setAttribute('value', '')
-                input.setAttribute('placeholder', "Rechercher des " + this.section)
+                input.removeAttribute('value', '')
+                input.setAttribute('placeholder', "Rechercher des " + this._name)
             }
         })
     }
