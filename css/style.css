@@ -76,18 +76,19 @@ header{
 
 .tags-container {
     display: flex;
-    gap: 1.5rem;
+    gap: 1.2rem;
     margin: 1rem 0;
 }
 
 .tag {
-    width: max-content;
     padding: .5rem;
     background: var(--blue);
     color: white;
     border-radius: 6px;
     border: none;
     cursor: pointer;
+    font-size: 1rem;
+
 }
 .tag:hover {
     background-color: #1f519d;
