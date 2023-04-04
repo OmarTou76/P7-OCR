@@ -3,11 +3,12 @@ export class Dropdown {
         this.search = search
         this._id = data.id
         this._name = data.name
-        this._class = data.class
+        this._class = data.name
 
         this.$dropdown = document.createElement('div')
         this.$dropdown.classList.add('dropdown__content', this._class ?? this._class)
 
+        this._query = ""
 
         this.$dropdownWrapper = document.querySelector('.dropdowns-container')
         this.$tagWrapper = document.querySelector('.tags-container')
@@ -33,14 +34,14 @@ export class Dropdown {
         this.fillList()
     }
 
-    fillList(query = "") {
+    fillList() {
         const tags = this.search.tags[this._id]
         const selectedTags = this.search.selectedTags[this._id]
 
         let list = tags.filter(tag => !selectedTags?.includes(tag))
 
-        if (query) {
-            list = list.filter(tag => tag.toLowerCase().includes(query.toLowerCase()))
+        if (this._query) {
+            list = list.filter(tag => tag.toLowerCase().includes(this._query.toLowerCase()))
         }
         this.displayList(list)
     }
@@ -62,11 +63,7 @@ export class Dropdown {
             const elementSelected = e.target.innerHTML
             const { value } = this.$dropdown.querySelector('input')
             this.createTag(elementSelected)
-            if (value) {
-                this.fillList(value)
-            } else {
-                this.fillList()
-            }
+            this.fillList()
             this.search.update()
         })
     }
@@ -118,11 +115,8 @@ export class Dropdown {
 
             const { value } = e.target
 
-            if (value.length >= 3) {
-                this.fillList(value)
-            } else {
-                this.fillList()
-            }
+            this._query = value
+            this.fillList()
         })
 
     }

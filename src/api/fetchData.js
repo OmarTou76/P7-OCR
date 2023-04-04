@@ -1,5 +1,3 @@
-import { Recipe } from "../models/recipe.js"
-
 class FetchData {
     constructor(url) {
         this._url = url
