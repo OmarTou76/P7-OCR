@@ -3,7 +3,7 @@ export class Dropdown {
         this.search = search
         this._id = data.id
         this._name = data.name
-        this._class = data.name
+        this._class = data.class
 
         this.$dropdown = document.createElement('div')
         this.$dropdown.classList.add('dropdown__content', this._class ?? this._class)
