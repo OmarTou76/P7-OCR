@@ -10,7 +10,6 @@ class App {
         this.$recipesWrapper = document.querySelector('.recipes-container')
         this.search = new Search(this)
 
-
     }
 
     async main() {
@@ -41,12 +40,27 @@ class App {
 
     displayRecipe(recipes) {
         this.$recipesWrapper.innerHTML = ""
+
+        if (!recipes.length) {
+            return this.noRecipeView()
+        }
+
         recipes.map(recipe => new Recipe(recipe))
             .forEach(recipe => {
                 this.$recipesWrapper.appendChild(recipe.createCard())
             })
     }
 
+    noRecipeView() {
+        const div = document.createElement('div')
+        div.classList.add('noRecipeView')
+        const content = `<span>
+        Aucune recette ne correspond à votre critère… <br/> vous pouvez
+        chercher « tarte aux pommes », « poisson », etc
+        </span>`
+        div.innerHTML = content
+        this.$recipesWrapper.appendChild(div)
+    }
 
 }
 
