@@ -24,10 +24,7 @@ export class Search {
     }
 
     filter() {
-        this.filterByInput()
         this.filterbyTags()
-
-
 
         this.app.displayRecipe(this.currentState)
 
@@ -37,8 +34,8 @@ export class Search {
     }
 
     filterByInput() {
-        if (!this._query) return
-        this._filteredSearch = [...this.initialState].filter(el => {
+        if (!this._query) return [...this.initialState]
+        return [...this.initialState].filter(el => {
             let match = false
             const values = [el.name, el.description]
 
@@ -63,7 +60,8 @@ export class Search {
             return
         }
 
-        const recipes = this.currentState
+        const recipes = this.filterByInput()
+
 
         this._filteredSearch = recipes.filter(recipe => {
             let match = true
