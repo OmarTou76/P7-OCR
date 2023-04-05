@@ -75,33 +75,42 @@ export class Search {
 
         const recipes = this.filterByInput()
 
+        const result = []
 
-        this._filteredSearch = recipes.filter(recipe => {
+        for (let i = 0; i < recipes.length; i++) {
             let match = true
 
             const tags = {
-                ingredients: recipe.ingredients.reduce((ingredients, curr) => {
-                    if (!ingredients) {
-                        ingredients = []
-                    }
-                    ingredients.push(curr.ingredient)
-                    return ingredients
-                }, []),
-                appliance: recipe.appliance,
-                ustensils: recipe.ustensils
+                appliance: recipes[i].appliance,
+                ustensils: recipes[i].ustensils,
+                ingredients: []
             }
 
-            entries.forEach(([key, value]) => {
-                value.forEach(v => {
-                    const isExist = tags[key].indexOf(v)
+            const { ingredients } = recipes[i]
+
+            for (let j = 0; j < ingredients.length; j++) {
+                tags.ingredients.push(ingredients[j].ingredient)
+            }
+
+            for (let k = 0; k < entries.length; k++) {
+                const [key, value] = entries[k]
+
+                for (let v = 0; v < value.length; v++) {
+                    const isExist = tags[key].indexOf(value[v])
                     if (isExist === -1) {
                         match = false
-                        return
+                        break
                     }
-                })
-            })
-            return match
-        })
+                }
+            }
+
+            if (match) {
+                result.push(recipes[i])
+            }
+        }
+
+
+        this._filteredSearch = result
     }
 
 
