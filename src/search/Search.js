@@ -35,20 +35,33 @@ export class Search {
 
     filterByInput() {
         if (!this._query) return [...this.initialState]
-        return [...this.initialState].filter(el => {
+
+        const result = []
+        const recipes = [...this.initialState]
+
+        for (let i = 0; i < recipes.length; i++) {
+
             let match = false
-            const values = [el.name, el.description]
+            const values = [recipes[i].name, recipes[i].description]
 
-            el.ingredients.forEach(i => values.push(i.ingredient))
+            const { ingredients } = recipes[i]
 
-            values.forEach(v => {
-                if (v.toLowerCase().includes(this._query.toLowerCase())) {
+            for (let j = 0; j < ingredients.length; j++) {
+                values.push(ingredients[j].ingredient)
+            }
+
+            for (let k = 0; k < values.length; k++) {
+                if (values[k].toLowerCase().includes(this._query.toLowerCase().trim())) {
                     match = true
-                    return
+                    break
                 }
-            })
-            return match
-        })
+            }
+
+            if (match) {
+                result.push(recipes[i])
+            }
+        }
+        return result
     }
 
     filterbyTags() {
