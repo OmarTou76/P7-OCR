@@ -42,7 +42,7 @@ export class Search {
             el.ingredients.forEach(i => values.push(i.ingredient))
 
             values.forEach(v => {
-                if (v.toLowerCase().includes(this._query.toLowerCase())) {
+                if (v.toLowerCase().includes(this._query.toLowerCase().trim())) {
                     match = true
                     return
                 }
