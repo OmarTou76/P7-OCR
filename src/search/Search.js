@@ -40,10 +40,10 @@ export class Search {
         const recipes = [...this.initialState]
 
         for (let i = 0; i < recipes.length; i++) {
-            if (recipes[i].name.includes(this._query.toLowerCase().trim())) {
+            if (recipes[i].name.toLowerCase().includes(this._query.toLowerCase().trim())) {
                 result.push(recipes[i])
                 continue
-            } else if (recipes[i].name.includes(this._query.toLowerCase().trim())) {
+            } else if (recipes[i].description.toLowerCase().includes(this._query.toLowerCase().trim())) {
                 result.push(recipes[i])
                 continue
             } else {
