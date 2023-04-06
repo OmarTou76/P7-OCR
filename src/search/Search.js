@@ -36,18 +36,19 @@ export class Search {
     filterByInput() {
         if (!this._query) return [...this.initialState]
         return [...this.initialState].filter(el => {
-            let match = false
-            const values = [el.name, el.description]
+            if (el.name.toLowerCase().includes(this._query.toLowerCase().trim())) {
+                return true
+            } else if (el.description.toLowerCase().includes(this._query.toLowerCase().trim())) {
+                return true
+            } else {
+                const foundIngredient = el.ingredients.find(ingredient => {
+                    if (ingredient.ingredient.toLowerCase().includes(this._query.toLowerCase().trim())) {
+                        return true
+                    }
+                })
 
-            el.ingredients.forEach(i => values.push(i.ingredient))
-
-            values.forEach(v => {
-                if (v.toLowerCase().includes(this._query.toLowerCase().trim())) {
-                    match = true
-                    return
-                }
-            })
-            return match
+                if (foundIngredient) return true
+            }
         })
     }
 
