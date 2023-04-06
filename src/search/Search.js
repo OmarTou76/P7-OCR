@@ -40,32 +40,27 @@ export class Search {
         const recipes = [...this.initialState]
 
         for (let i = 0; i < recipes.length; i++) {
-
-            let match = false
-            const values = [recipes[i].name, recipes[i].description]
-
-            const { ingredients } = recipes[i]
-
-            for (let j = 0; j < ingredients.length; j++) {
-                values.push(ingredients[j].ingredient)
-            }
-
-            for (let k = 0; k < values.length; k++) {
-                if (values[k].toLowerCase().includes(this._query.toLowerCase().trim())) {
-                    match = true
-                    break
-                }
-            }
-
-            if (match) {
+            if (recipes[i].name.includes(this._query.toLowerCase().trim())) {
                 result.push(recipes[i])
+                continue
+            } else if (recipes[i].name.includes(this._query.toLowerCase().trim())) {
+                result.push(recipes[i])
+                continue
+            } else {
+                const { ingredients } = recipes[i]
+
+                for (let j = 0; j < ingredients.length; j++) {
+                    if (ingredients[j].ingredient.toLowerCase().includes(this._query.toLowerCase().trim())) {
+                        result.push(recipes[i])
+                        break
+                    }
+                }
             }
         }
         return result
     }
 
     filterbyTags() {
-
         const entries = Object.entries(this.selectedTags)
 
         if (entries.length === 0 && !this._query) {
