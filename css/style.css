@@ -285,3 +285,31 @@ header{
     font-size: 30px;
     padding: 3rem 2rem;
 }
+
+@media screen and (max-width: 1150px) {
+    main {
+        margin: 0 30px;
+    }   
+    .recipes-container {
+     column-gap: 30px;
+    }
+}
+
+@media screen and (max-width: 990px) {
+    .recipes-container {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .dropdowns-container {
+        flex-direction: column;
+        gap: 1rem;
+        margin: 0
+    }
+}
+
+@media screen and (max-width: 568px) {
+    .recipes-container {
+        grid-template-columns: 1fr;
+    }
+
+}
