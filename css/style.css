@@ -62,7 +62,7 @@ header{
     padding: 0 1rem;
     font-size: 18px;
 }
-.searchForm button {
+.searchForm div {
     flex: .5;
     font-size: 32px;
     margin: auto;
@@ -315,6 +315,9 @@ header{
     }
     .dropdown__content input::placeholder {
         font-size: 1rem;
+    }
+    .searchForm div {
+        margin-right: 1rem
     }
 }
 
