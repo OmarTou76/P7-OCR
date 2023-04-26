@@ -65,11 +65,11 @@ header{
 .searchForm div {
     flex: .5;
     font-size: 32px;
-    margin: auto;
+    margin: auto 1rem;
     border: none;
     background-color: inherit;
-    margin-right: .3rem;
     cursor: pointer;
+    text-align: center;
 }
 
 /* Tags container */
@@ -315,9 +315,6 @@ header{
     }
     .dropdown__content input::placeholder {
         font-size: 1rem;
-    }
-    .searchForm div {
-        margin-right: 1rem
     }
 }
 
