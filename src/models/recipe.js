@@ -35,7 +35,17 @@ export class Recipe {
     }
 
     ingredientsTemplate() {
-        return this.ingredients.map(el => `<li><strong>${el.ingredient}</strong>: ${el.quantity || ""} ${el.unit || ""} </li>`).join('')
+        const parser = {
+            "cuillères à soupe": 'cuillères',
+            "cuillères à café": "cuillères",
+            'grammes': "g"
+        }
+        const getUnit = (unit = "") => {
+            if (unit && parser[unit]) return parser[unit]
+            return unit
+        }
+
+        return this.ingredients.map(el => `<li><strong>${el.ingredient}</strong>: ${el.quantity || ""} ${getUnit(el.unit || el.unite)} </li>`).join('')
     }
 
     get name() {
